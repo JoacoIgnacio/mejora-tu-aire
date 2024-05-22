@@ -1,0 +1,16 @@
+ion-toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ion-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
+.admin{
+    font-size: 13px;
+}
