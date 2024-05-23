@@ -11,7 +11,7 @@ Sugerencias:
       Descargar las extensiones de Ionic en VisualStudio.
 
 Ejecución: Para ejecutar y poder ver el programa es necesario abrir una terminal en VisualStudio en la cual pondremos el siguiente comando: ionic serve 
-           Si todo va de manera correcta deberia aparecer esto: 
+           Si todo va de manera correcta se creara una carpeta .angular y en la terminal deberia aparecer esto: 
          
           [INFO] Development server running!
           
