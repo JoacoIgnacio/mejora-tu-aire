@@ -1,6 +1,6 @@
 =============== INSTALACIÓN DE PROGRAMAS NECESARIOS PARA EL FUNCIONAMIENTO ================
 
-  Para poder trabajar de manera correcta es necesario utilizar VisualStudio, descargar Ionic y NodeJS.
+  Para poder trabajar de manera correcta es necesario utilizar VisualStudio, descargar Ionic y Node.JS.
   Para descargar NodeJs: https://nodejs.org/en/ en la opción que dice Download NodeJs(LTS). Luego de descargarlo se procede a instalar y con eso esta listo para su uso.
   Para descargar ionic solo se necesita ir a la consola y pegar este comando " npm i -g @ionic/cli ", lo cual descargara e instalara ionic de manera automatica.
 
