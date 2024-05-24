@@ -4,6 +4,7 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, up
 import { User } from '../models/user.model';
 import {AngularFirestore} from '@angular/fire/compat/firestore';
 import { getFirestore, setDoc, doc, getDoc} from '@angular/fire/firestore';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +12,28 @@ import { getFirestore, setDoc, doc, getDoc} from '@angular/fire/firestore';
 export class FirebaseService {
 
   auth = inject(AngularFireAuth);
-  firestile = inject(AngularFirestore);
+  firestorage = inject(AngularFirestore);
+  utilsSvc = inject(UtilsService);
 
-
-// ===== Autenticación =====
-
-// ===== Acceder =====
+  // ===== Autenticación =====
+  getAuth(){
+    return getAuth();
+  }
+  // ===== Acceder =====
 
   signIn(user: User){
     return signInWithEmailAndPassword(getAuth(), user.email, user.password);
   
   }
 
-// ===== Crear Usuario =====
+  // ===== Crear Usuario =====
 
   signUp(user: User){
     return createUserWithEmailAndPassword(getAuth(), user.email, user.password);
     
   }
 
-// ===== Actualizar usuario =====
+  // ===== Actualizar usuario =====
   updateUser(displayName: string){
     return updateProfile(getAuth().currentUser, {displayName})
   }
@@ -38,7 +41,14 @@ export class FirebaseService {
   sendRecoveryEmail(email: string){
     return sendPasswordResetEmail(getAuth(), email);
   }
+  // ===== Cerrar Sesión  =====
+  signOut(){
+    getAuth().signOut();
+    localStorage.removeItem('user');
+    this.utilsSvc.router.navigate(['/auth']);
+  }
 
+  
 // ===== Base de datos =====
 
   // ===== Setear un documento =====
