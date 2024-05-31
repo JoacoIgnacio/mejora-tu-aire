@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { LoadingController, ToastOptions } from '@ionic/angular';
+import { LoadingController, ModalController, ModalOptions, ToastOptions } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -10,6 +10,7 @@ export class UtilsService {
 
   loadingCtrl = inject(LoadingController);
   toastCtrl = inject(ToastController);
+  modalCtrl = inject(ModalController);
   router = inject(Router);
 
 
@@ -37,5 +38,15 @@ loading(){
   getFromLocal(key: string){
     return JSON.parse(localStorage.getItem(key));
   }
-
+// ===== Obtener un elemento de localstorage =====
+  async presentModal(opts: ModalOptions) {
+    const modal = await this.modalCtrl.create(opts);
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data)return data;
+  }
+  
+  dissmissModal(data?: any){
+    this.modalCtrl.dismiss(data);
+  }
 }
