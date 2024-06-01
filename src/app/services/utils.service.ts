@@ -38,7 +38,7 @@ loading(){
   getFromLocal(key: string){
     return JSON.parse(localStorage.getItem(key));
   }
-// ===== Obtener un elemento de localstorage =====
+// ===== Modal =====
   async presentModal(opts: ModalOptions) {
     const modal = await this.modalCtrl.create(opts);
     await modal.present();
@@ -49,4 +49,5 @@ loading(){
   dissmissModal(data?: any){
     this.modalCtrl.dismiss(data);
   }
+ 
 }

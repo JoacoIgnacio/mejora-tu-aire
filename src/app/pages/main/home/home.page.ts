@@ -22,7 +22,8 @@ export class HomePage implements OnInit {
   // ===== Agregar Nueva ficha  =====
   addUpdateFile(){
     this.utilsSvc.presentModal({
-      component: AddUpdateProductComponent
+      component: AddUpdateProductComponent,
+      cssClass: 'modal-fullscreen'
   });
   }
 }

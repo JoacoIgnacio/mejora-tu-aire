@@ -1,3 +1,55 @@
-<p>
-  add-update-product works!
-</p>
+<app-header [isModal]="true" title="Agregar nueva ficha"></app-header>
+<ion-content>
+
+    <form [formGroup]="form" class="ion-no-padding ion-text-center" (ngSubmit)="submit()" (keypress.enter)="submit()">
+
+
+
+        <!--============= Patente ===============-->
+        <app-custom-imput
+            aria-autocomplete="patente"
+            [control]="form.controls.patente" 
+            type="text"
+            label="Patente"
+        ></app-custom-imput>
+        <div>
+            <div *ngIf="form.controls.name.errors?.['minlength']">El nombre tiene que tener al menos 6 caracteres</div>
+        </div>
+        <!--============= Numero de OT ===============-->
+        <!--============= ID Cliente ===============-->
+
+        <!--============= Name ===============-->
+            <app-custom-imput
+                aria-autocomplete="name"
+                [control]="form.controls.name" 
+                type="text"
+                label="Nombre"
+            ></app-custom-imput>
+            <div class="validator" *ngIf="form.controls.name.errors && form.controls.name.touched">
+                <div *ngIf="form.controls.name.errors?.['minlength']">El nombre tiene que tener al menos 4 caracteres</div>
+            </div>
+            
+
+         <!--============= Fono ===============-->
+        <!--============= Dirección ===============-->
+        <!--============= Año del auto ===============-->
+        <!--============= Kilometraje ===============-->
+        <!--============= Auto ===============-->
+        <!--============= Marca ===============-->
+        <!--============= Modelo ===============-->
+        <!--============= Imagen ===============-->
+
+         
+       
+
+
+
+         <ion-button  mode="ios" class="ion-magin" [disabled]="form.invalid">
+            Crear ficha
+            <ion-icon slot="end"></ion-icon>
+        </ion-button>
+
+
+    </form>
+
+</ion-content>
