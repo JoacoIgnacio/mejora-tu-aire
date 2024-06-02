@@ -31,16 +31,60 @@ export class AddCardPage implements OnInit {
     vacio_bomba: new FormControl(false),
     inyeccion_aceite: new FormControl(false),
     inyeccion_tinta: new FormControl(false),
-
+    carga_gas: new FormControl(false),
+    carga_gas_val: new FormControl({ value: '', disabled: true }, Validators.required),
+    prueba_funcionamiento: new FormControl(false),
+    prueba_funcionamiento_val: new FormControl({ value: '', disabled: true }, Validators.required),
+    lectura_difusores: new FormControl(false),
+    lectura_difusores_val: new FormControl({ value: '', disabled: true }, Validators.required),
+    lectura_presiones: new FormControl(false),
+    lectura_presiones_baja_val: new FormControl({ value: '', disabled: true }, Validators.required),
+    lectura_presiones_alta_val: new FormControl({ value: '', disabled: true }, Validators.required),
+    garantia: new FormControl(false),
   });
 
-onSubmit() {
-  console.log(this.checkboxForm.value);
-}
 firebaseSvc = inject(FirebaseService);
 utilsSvc = inject(UtilsService);
 
 ngOnInit() {
+  this.checkboxForm.get('carga_gas')?.valueChanges.subscribe(value => {
+    const control = this.checkboxForm.get('carga_gas_val');
+    if (value) {
+      control?.enable();
+    } else {
+      control?.disable();
+    }
+  });
+
+  this.checkboxForm.get('prueba_funcionamiento')?.valueChanges.subscribe(value => {
+    const control = this.checkboxForm.get('prueba_funcionamiento_val');
+    if (value) {
+      control?.enable();
+    } else {
+      control?.disable();
+    }
+  });
+
+  this.checkboxForm.get('lectura_difusores')?.valueChanges.subscribe(value => {
+    const control = this.checkboxForm.get('lectura_difusores_val');
+    if (value) {
+      control?.enable();
+    } else {
+      control?.disable();
+    }
+  });
+
+  this.checkboxForm.get('lectura_presiones')?.valueChanges.subscribe(value => {
+    const controlBaja = this.checkboxForm.get('lectura_presiones_baja_val');
+    const controlAlta = this.checkboxForm.get('lectura_presiones_alta_val');
+    if (value) {
+      controlBaja?.enable();
+      controlAlta?.enable();
+    } else {
+      controlBaja?.disable();
+      controlAlta?.disable();
+    }
+  });
 }
 // In your component class
 toUpperCase(controlName: string) {
@@ -74,6 +118,9 @@ async submit() {
       loading.dismiss();
     });
   }
+}
+onSubmit() {
+  console.log(this.checkboxForm.value);
 }
 }
 

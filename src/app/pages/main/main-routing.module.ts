@@ -7,18 +7,31 @@ const routes: Routes = [
   {
     path: '',
     component: MainPage
-  },  {
+  },
+  {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
-  {
-    path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
-  },
+  
   {
     path: 'add-card',
     loadChildren: () => import('./add-card/add-card.module').then( m => m.AddCardPageModule)
-  }
+  },
+ 
+  {
+    path: 'delete-card',
+    loadChildren: () => import('./delete-card/delete-card.module').then( m => m.DeleteCardPageModule)
+  },  {
+    path: 'modify-card',
+    loadChildren: () => import('./modify-card/modify-card.module').then( m => m.ModifyCardPageModule)
+  },
+  {
+    path: 'search-card',
+    loadChildren: () => import('./search-card/search-card.module').then( m => m.SearchCardPageModule)
+  },
+
+  
+
 
 ];
 

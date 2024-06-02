@@ -22,10 +22,7 @@ export class HomePage implements OnInit {
     this.firebaseSvc.signOut();
   }
 
-  // ===== Redirigir a otra dirección =====
-  addCard(){
-    this.utilsSvc.routerLink('/main/add-card');
-  }
+
 
   // ===== Agregar Nueva ficha  =====
   addUpdateFile(){

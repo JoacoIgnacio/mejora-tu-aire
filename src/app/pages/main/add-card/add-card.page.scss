@@ -5,3 +5,22 @@ label {
   margin-left: 0;
   padding-left: 0;
 }
+/* add-card.page.scss */
+
+.highlighted-input {
+  border: 2px solid #ff9800; /* Naranja */
+  background-color: #fff3e0; /* Naranja claro */
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.highlighted-input input {
+  border: none; /* Elimina el borde interior del input */
+  outline: none; /* Elimina el borde al hacer clic */
+  background: transparent; /* Fondo transparente */
+}
+
+.highlighted-input label {
+  font-weight: bold;
+  color: #ff9800;
+}

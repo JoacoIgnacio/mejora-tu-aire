@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProfilePageRoutingModule } from './profile-routing.module';
+import { DeleteCardPageRoutingModule } from './delete-card-routing.module';
 
-import { ProfilePage } from './profile.page';
+import { DeleteCardPage } from './delete-card.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule
+    DeleteCardPageRoutingModule
   ],
-  declarations: [ProfilePage]
+  declarations: [DeleteCardPage]
 })
-export class ProfilePageModule {}
+export class DeleteCardPageModule {}
