@@ -4,13 +4,13 @@ import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
-@Component({
-  selector: 'app-add-update-product',
-  templateUrl: './add-update-product.component.html',
-  styleUrls: ['./add-update-product.component.scss'],
-})
-export class AddUpdateProductComponent  implements OnInit {
 
+@Component({
+  selector: 'app-add-card',
+  templateUrl: './add-card.page.html',
+  styleUrls: ['./add-card.page.scss'],
+})
+export class AddCardPage implements OnInit {
   form = new FormGroup({
     patente: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(6), Validators.pattern('[A-Z0-9]{4,7}$')]),
     N_Ot: new FormControl('',[Validators.required,Validators.minLength(1), Validators.pattern('[0-9]{8}')]),
@@ -76,3 +76,4 @@ async submit() {
   }
 }
 }
+

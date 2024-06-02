@@ -24,21 +24,20 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
-
 ion-button {
     text-transform: none;
 }
 
-// safe padding for ios
-.safe-p-bottom{
-    padding-bottom: constant(safe-area-inset-bottom); // for ios 13+
-    padding-bottom: env(safe-area-inset-bottom); // for previous ios versions
+// Safe padding for iOS
+.safe-p-bottom {
+    padding-bottom: constant(safe-area-inset-bottom); // For iOS 13+
+    padding-bottom: env(safe-area-inset-bottom); // For previous iOS versions
 }
 
 .submit {
-    margin-top: 30px; /* Aumenta el espacio entre el botón y el elemento encima de él */
+    margin-top: 30px; // Aumenta el espacio entre el botón y el elemento encima de él
+}
 
-  }
 .empty {
     text-align: center;
     padding: 60px;
@@ -54,7 +53,6 @@ ion-button {
     justify-content: center;
     align-items: center;
 }
-
 
 .custom-input {
     --border-color: #e0e0e0;
@@ -73,13 +71,16 @@ ion-button {
         top: 13px;
     }
 }
+.mi-clase {
+    margin-left: 0;
+    padding-left: 0;
+  }
 
 .validators {
     color: var(--ion-color-danger);
     font-size: 13px;
     text-align: center;
 }
-
 
 .auth-form {
     width: 100%;
@@ -128,4 +129,43 @@ ion-button {
     .add-update-modal {
         --height: 680px;
     }
+}
+
+.header {
+    background-color: #0056d2; /* Ajusta este color a tu gusto */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    position: relative;
+    text-align: center;
+
+    .close-button {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    span {
+        display: block;
+        font-size: 0.75rem;
+        margin-top: 5px;
+    }
+}
+
+.logout-button {
+    font-size: 12px; /* Ajusta el tamaño de la fuente */
+    padding: 0px 0px; /* Ajusta el padding para hacer el botón más pequeño */
+    height: 0px; /* Ajusta la altura del botón */
+    line-height: 0px; /* Ajusta la altura de la línea */
+    
+    color: #fff; /* Color del texto */
+    
 }

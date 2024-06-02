@@ -1,0 +1,194 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/main/home">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title horizontal="fixed">Agregar nueva Ficha</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <form [formGroup]="form" class="ion-no-padding ion-text-center" (ngSubmit)="submit()" (keypress.enter)="submit()">
+  <!--============= Patente ===============-->
+  <app-custom-imput
+  aria-autocomplete="patente"
+  [control]="form.controls.patente" 
+  type="text"
+  label="Patente"
+  (input)="toUpperCase('patente')"
+  ></app-custom-imput>
+  <div class="validator" *ngIf="form.controls.patente.errors && form.controls.patente.touched">
+  <div *ngIf="form.controls.patente.errors?.['minlength']">La patente tiene que tener al menos 4 caracteres</div>
+  <div *ngIf="form.controls.patente.errors?.['maxlength']">La patente no puede tener más de 6 caracteres</div>
+  <div *ngIf="form.controls.patente.errors?.['pattern']">La patente solo puede contener letras mayúsculas y números</div>
+  </div>
+<!--============= Numero de OT ===============-->
+<app-custom-imput
+aria-autocomplete="Numero de OT"
+[control]="form.controls.N_Ot" 
+type="text"
+label="Numero de OT"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.N_Ot.errors && form.controls.N_Ot.touched">
+<div *ngIf="form.controls.N_Ot.errors?.['minlength']">El número de OT tiene que tener al menos 3 dígitos</div>
+<div *ngIf="form.controls.N_Ot.errors?.['pattern']">El número de OT solo puede contener números</div>
+</div>
+
+<!--============= ID Cliente ===============-->
+<app-custom-imput
+aria-autocomplete="ID Cliente"
+[control]="form.controls.id_Cliente" 
+type="text"
+label="ID Cliente"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.id_Cliente.errors && form.controls.id_Cliente.touched">
+<!-- Aquí puedes añadir validadores y mensajes para id_Cliente si es necesario -->
+</div>
+
+<!--============= Name ===============-->
+<app-custom-imput
+aria-autocomplete="name"
+[control]="form.controls.name" 
+type="text"
+label="Nombre"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.name.errors && form.controls.name.touched">
+<div *ngIf="form.controls.name.errors?.['minlength']">El nombre tiene que tener al menos 4 caracteres</div>
+</div>
+
+<!--============= Fono ===============-->
+<app-custom-imput
+aria-autocomplete="Fono"
+[control]="form.controls.fono" 
+type="text"
+label="Fono"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.fono.errors && form.controls.fono.touched">
+<div *ngIf="form.controls.fono.errors?.['pattern']">El fono debe tener 10 dígitos</div>
+</div>
+
+<!--============= Dirección ===============-->
+<app-custom-imput
+aria-autocomplete="Dirección"
+[control]="form.controls.direccion" 
+type="text"
+label="Dirección"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.direccion.errors && form.controls.direccion.touched">
+<div *ngIf="form.controls.direccion.errors?.['minlength']">La dirección tiene que tener al menos 10 caracteres</div>
+<div *ngIf="form.controls.direccion.errors?.['maxlength']">La dirección no puede tener más de 100 caracteres</div>
+</div>
+
+<!--============= Año del auto ===============-->
+<app-custom-imput
+aria-autocomplete="Año del auto"
+[control]="form.controls.year_Car" 
+type="text"
+label="Año del auto"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.year_Car.errors && form.controls.year_Car.touched">
+<div *ngIf="form.controls.year_Car.errors?.['pattern']">El año del auto debe ser un número de 4 dígitos</div>
+</div>
+
+<!--============= Kilometraje ===============-->
+<app-custom-imput
+aria-autocomplete="Kilometraje"
+[control]="form.controls.km" 
+type="text"
+label="Kilometraje"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.km.errors && form.controls.km.touched">
+<div *ngIf="form.controls.km.errors?.['pattern']">El kilometraje solo puede contener números</div>
+</div>
+
+<!--============= Car ===============-->
+<app-custom-imput
+aria-autocomplete="car"
+[control]="form.controls.car"
+type="text"
+label="Car"
+(input)="toUpperCase('car')"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.car.errors && form.controls.car.touched">
+    <div *ngIf="form.controls.car.errors?.['pattern']">El campo solo puede contener letras mayúsculas</div>
+</div>
+
+<!--============= Marca ===============-->
+<app-custom-imput
+aria-autocomplete="marca"
+[control]="form.controls.marca"
+type="text"
+label="Marca"
+(input)="toUpperCase('marca')"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.marca.errors && form.controls.marca.touched">
+    <div *ngIf="form.controls.marca.errors?.['pattern']">El campo solo puede contener letras mayúsculas</div>
+</div>
+
+<!--============= Modelo ===============-->
+<app-custom-imput
+aria-autocomplete="modelo"
+[control]="form.controls.modelo"
+type="text"
+label="Modelo"
+(input)="toUpperCase('modelo')"
+></app-custom-imput>
+<div class="validator" *ngIf="form.controls.modelo.errors && form.controls.modelo.touched">
+    <div *ngIf="form.controls.modelo.errors?.['pattern']">El campo solo puede contener letras mayúsculas</div>
+</div>
+
+<!--============= Imagen ===============-->
+<!-- =============== Seleccionables ===============-->
+
+<form [formGroup]="checkboxForm" horizontal="fixed" (ngSubmit)="onSubmit()">
+    <label>
+    <input type="checkbox" formControlName="filtro">
+        Se realiza revisión y limpieza de filtro de polen cabina.
+    </label>
+    <button type="submit"></button>
+</form>
+
+<form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
+    <label>
+    <input type="checkbox" formControlName="fugas">
+        Se realiza prueba de fugas c/gas nitrógeno a 200 psi.
+    </label>
+    <button type="submit"></button>
+</form>
+
+<form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
+    <label>
+    <input type="checkbox" formControlName="vacio_bomba">
+        Se realiza vacio de sistema con bomba 6 cfm, 30 min.
+    </label>
+    <button type="submit"></button>
+</form>
+
+<form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
+    <label>
+    <input type="checkbox" formControlName="inyeccion_aceite">
+        Se realiza inyección de aceite pag sintetico 50 ml.
+    </label>
+    <button type="submit"></button>
+</form>
+
+<form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
+    <label>
+    <input type="checkbox" formControlName="inyeccion_tinta">
+    Se realiza inyección de tinta uv dye 5 ml
+    </label>
+    <button type="submit"></button>
+</form>
+ 
+ <ion-button  mode="ios" class="ion-magin" [disabled]="form.invalid">
+    Crear ficha
+    <ion-icon slot="end"></ion-icon>
+</ion-button>
+
+
+  </form>
+  
+</ion-content>

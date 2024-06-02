@@ -1,15 +1,47 @@
-<app-header title="Inicio"></app-header>
-
+<!-- ======== Página de inicio ========== -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
 
 <!-- ======== Salir de la sesión ========== -->
-<ion-button  (click)="signOut()">
-  Cerrar sesión
-</ion-button>
+<ion-content [fullscreen]="true">
+  <ion-fab  vertical="top" horizontal="end" slot="fixed" > 
+    <ion-button color="primary"(click)="signOut()">
+      Cerrar sesión
+    </ion-button>
+  </ion-fab>
+</ion-content> 
+
+<ion-menu side="start" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item routerLink="/main/add-card">Agregar nueva Ficha</ion-item>
+      <ion-item routerLink="/ruta2">Ruta 2</ion-item>
+      <ion-item routerLink="/ruta3">Ruta 2</ion-item>
+      <!-- Agrega más elementos de la lista aquí para más opciones en el menú -->
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet id="main-content"></ion-router-outlet>
+
 <!-- ======== Crear nueva ficha =========-->
+<!-- 
 <ion-content>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addUpdateFile()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-</ion-content>
+</ion-content> 
+-->
