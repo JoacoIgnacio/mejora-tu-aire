@@ -192,8 +192,8 @@
               <ion-item lines="none">
                 <ion-checkbox slot="start" formControlName="lectura_presiones"></ion-checkbox>
                 <ion-label class="checkbox-label">Se toma lectura de presiones de sistema</ion-label>
-                <ion-input formControlName="lectura_presiones_baja_val" placeholder="Baja psi" *ngIf="checkboxForm.controls.lectura_presiones.value"></ion-input>
-                <ion-input formControlName="lectura_presiones_alta_val" placeholder="Alta psi" *ngIf="checkboxForm.controls.lectura_presiones.value"></ion-input>
+                <ion-input formControlName="  lectura_presiones_baja_val" placeholder="  Baja psi" *ngIf="checkboxForm.controls.lectura_presiones.value"></ion-input>
+                <ion-input formControlName="  lectura_presiones_alta_val" placeholder="  Alta psi" *ngIf="checkboxForm.controls.lectura_presiones.value"></ion-input>
               </ion-item>
               <ion-item lines="none">
                 <ion-checkbox slot="start" formControlName="garantia"></ion-checkbox>
@@ -205,4 +205,11 @@
         
       </form>
     </form>
+    <ion-content [fullscreen]="true">
+      <ion-fab  vertical="end" horizontal="end" slot="fixed" > 
+        <ion-button>
+          Crear ficha
+        </ion-button>
+      </ion-fab>
+    </ion-content> 
 </ion-content>
