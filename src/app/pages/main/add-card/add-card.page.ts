@@ -13,17 +13,18 @@ import { UtilsService } from 'src/app/services/utils.service';
 export class AddCardPage implements OnInit {
   form = new FormGroup({
     patente: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(6), Validators.pattern('[A-Z0-9]{4,7}$')]),
-    N_Ot: new FormControl('',[Validators.required,Validators.minLength(1), Validators.pattern('[0-9]{8}')]),
+    N_Ot: new FormControl('',[Validators.required,Validators.minLength(1), Validators.pattern('[0-9]{1,9}')]),
     id_Cliente: new FormControl('',Validators.required),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     fono: new FormControl('',[Validators.required, Validators.pattern('[0-9]{8}$')]),
     direccion: new FormControl('',[Validators.required, Validators.minLength(4)]),
     year_Car: new FormControl('',[Validators.required, Validators.pattern('[0-9]{4}$')]),
     km: new FormControl('',[Validators.required, Validators.pattern('^[0-9]+$')]),
-    car: new FormControl('',[Validators.required,Validators.pattern('^[A-Z]+$')]),
-    marca: new FormControl('',[Validators.required,Validators.pattern('^[A-Z]+$')]),
-    modelo: new FormControl('',[Validators.required,Validators.pattern('^[A-Z]+$')]),
-    image: new FormControl('')
+    car: new FormControl('',[Validators.required,]),
+    marca: new FormControl('',[Validators.required,]),
+    modelo: new FormControl('',[Validators.required,]),
+    image: new FormControl(''),
+    acciones: new FormControl('')
 });
   checkboxForm = new FormGroup({
     filtro: new FormControl(false),

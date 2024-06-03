@@ -138,56 +138,71 @@
     <div class="validator" *ngIf="form.controls.modelo.errors && form.controls.modelo.touched">
         <div *ngIf="form.controls.modelo.errors?.['pattern']">El campo solo puede contener letras mayúsculas</div>
     </div>
+    <!--============= Acciones realizadas ===============-->
+    <div class="large-form">
+        <ion-item>
+          <ion-label>Acciones Realizadas</ion-label>
+          <ion-textarea formControlName="acciones_realizadas" placeholder="Escriba las acciones realizadas aquí..."></ion-textarea>
+        </ion-item>
+      </div>
 
     <!--============= Imagen ===============-->
-    <!-- =============== Seleccionables ===============-->
-
+    <!--============= Checkbox Form ===============-->
     <form [formGroup]="checkboxForm" horizontal="fixed" (ngSubmit)="onSubmit()">
-        <label>
-        <input type="checkbox" formControlName="filtro">
-            Se realiza revisión y limpieza de filtro de polen cabina.
-        </label>
-        <button type="submit"></button>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="0" size-md="3.5">
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="filtro"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza revisión y limpieza de filtro de polen cabina.</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="fugas"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza prueba de fugas c/gas nitrógeno a 200 psi.</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="vacio_bomba"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza vacio de sistema con bomba 6 cfm, 30 min.</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="inyeccion_aceite"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza inyección de aceite pag sintetico 50 ml.</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="inyeccion_tinta"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza inyección de tinta uv dye 5 ml.</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="3.5">
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="carga_gas"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza carga de gas R134a</ion-label>
+                <ion-input formControlName="carga_gas_val" placeholder="gr" *ngIf="checkboxForm.controls.carga_gas.value"></ion-input>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="prueba_funcionamiento"></ion-checkbox>
+                <ion-label class="checkbox-label">Se realiza prueba de funcionamiento a</ion-label>
+                <ion-input formControlName="prueba_funcionamiento_val" placeholder="rpm" *ngIf="checkboxForm.controls.prueba_funcionamiento.value"></ion-input>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="lectura_difusores"></ion-checkbox>
+                <ion-label class="checkbox-label">Lecturas de T* de difusores de aire:</ion-label>
+                <ion-input formControlName="lectura_difusores_val" placeholder="lectura" *ngIf="checkboxForm.controls.lectura_difusores.value"></ion-input>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="lectura_presiones"></ion-checkbox>
+                <ion-label class="checkbox-label">Se toma lectura de presiones de sistema</ion-label>
+                <ion-input formControlName="lectura_presiones_baja_val" placeholder="Baja psi" *ngIf="checkboxForm.controls.lectura_presiones.value"></ion-input>
+                <ion-input formControlName="lectura_presiones_alta_val" placeholder="Alta psi" *ngIf="checkboxForm.controls.lectura_presiones.value"></ion-input>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-checkbox slot="start" formControlName="garantia"></ion-checkbox>
+                <ion-label class="checkbox-label">Garantía de 3 meses</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+      </form>
     </form>
-
-    <form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
-        <label>
-        <input type="checkbox" formControlName="fugas">
-            Se realiza prueba de fugas c/gas nitrógeno a 200 psi.
-        </label>
-        <button type="submit"></button>
-    </form>
-
-    <form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
-        <label>
-        <input type="checkbox" formControlName="vacio_bomba">
-            Se realiza vacio de sistema con bomba 6 cfm, 30 min.
-        </label>
-        <button type="submit"></button>
-    </form>
-
-    <form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
-        <label>
-        <input type="checkbox" formControlName="inyeccion_aceite">
-            Se realiza inyección de aceite pag sintetico 50 ml.
-        </label>
-        <button type="submit"></button>
-    </form>
-
-    <form [formGroup]="checkboxForm" (ngSubmit)="onSubmit()">
-        <label>
-        <input type="checkbox" formControlName="inyeccion_tinta">
-        Se realiza inyección de tinta uv de 5 ml.
-        </label>
-        <button type="submit"></button>
-    </form>
-   
-    <ion-button  mode="ios" class="ion-magin" [disabled]="form.invalid">
-        Crear ficha
-        <ion-icon slot="end"></ion-icon>
-    </ion-button>
-
-
-    </form>
-  
 </ion-content>

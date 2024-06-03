@@ -1,26 +1,19 @@
-ion-content {
-    --background: white;
+ion-grid {
+  --ion-grid-padding: 0;
+  --ion-grid-column-padding: 8px;
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
   }
-label {
-  margin-left: 0;
-  padding-left: 0;
-}
-/* add-card.page.scss */
 
-.highlighted-input {
-  border: 2px solid #ff9800; /* Naranja */
-  background-color: #fff3e0; /* Naranja claro */
-  border-radius: 5px;
-  padding: 10px;
-}
+  .checkbox-label {
+    margin-left: 0px; /* Ajusta este valor para acercar el texto al checkbox */
+  }
 
-.highlighted-input input {
-  border: none; /* Elimina el borde interior del input */
-  outline: none; /* Elimina el borde al hacer clic */
-  background: transparent; /* Fondo transparente */
-}
-
-.highlighted-input label {
-  font-weight: bold;
-  color: #ff9800;
+  ion-checkbox {
+    --size: 20px; /* Tamaño del checkbox */
+    margin-right: 0px; /* Ajusta este valor para acercar el texto al checkbox */
+  }
 }

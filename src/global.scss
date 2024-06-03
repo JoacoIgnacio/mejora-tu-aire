@@ -33,7 +33,33 @@ ion-button {
     padding-bottom: constant(safe-area-inset-bottom); // For iOS 13+
     padding-bottom: env(safe-area-inset-bottom); // For previous iOS versions
 }
-
+.large-form {
+    ion-item {
+      --inner-padding-end: 12px;
+      --padding-start: 12px;
+    }
+  
+    ion-textarea {
+      height: 150px; /* Ajusta esta altura según sea necesario */
+      font-size: 16px; /* Ajusta el tamaño de fuente según sea necesario */
+    }
+  }
+  
+  ion-grid {
+    --ion-grid-padding: 0;
+    --ion-grid-column-padding: 8px;
+  
+    ion-item {
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --inner-padding-start: 0;
+    }
+  
+    .checkbox-label {
+      margin-left: 4px; /* Ajusta este margen según sea necesario */
+    }
+  }
+  
 .submit {
     margin-top: 30px; // Aumenta el espacio entre el botón y el elemento encima de él
 }
