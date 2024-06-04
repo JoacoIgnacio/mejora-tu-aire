@@ -1,19 +1,44 @@
-ion-grid {
-  --ion-grid-padding: 0;
-  --ion-grid-column-padding: 8px;
+.page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 200px;
+  padding-bottom: 20px; /* Ajusta el valor según sea necesario */
+}
 
-  ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    --inner-padding-start: 0;
-  }
+.image-icon {
+  font-size: 100px;
+  opacity: 30%;
+  margin-bottom: 10px;
+}
 
-  .checkbox-label {
-    margin-left: 0px; /* Ajusta este valor para acercar el texto al checkbox */
-  }
+ion-avatar {
+  width: 200px;
+  height: 160px;
+  --border-radius: 15px;
+  margin-bottom: 10px;
+}
 
-  ion-checkbox {
-    --size: 20px; /* Tamaño del checkbox */
-    margin-right: 0px; /* Ajusta este valor para acercar el texto al checkbox */
-  }
+button {
+  margin-bottom: 20px; /* Ajusta el valor según sea necesario */
+}
+.contenido {
+  display: flex;
+  justify-content: flex-start; /* Alinea el checkbox y el texto al inicio */
+  align-items: center;
+  margin-bottom: 10px; /* Espacio entre cada elemento, ajusta según sea necesario */
+}
+
+.checkbox-label {
+  margin-left: 10px; /* Espacio entre el checkbox y el texto, ajusta según sea necesario */
+}
+
+ion-checkbox {
+  width: auto;
+  margin-right: 10px; /* Espacio entre el checkbox y el texto, ajusta según sea necesario */
+}
+
+.custom-margin {
+  margin-right: 10px; /* Ajusta el valor del margen según tus necesidades */
 }

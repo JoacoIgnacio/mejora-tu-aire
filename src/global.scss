@@ -195,3 +195,44 @@ ion-button {
     color: #fff; /* Color del texto */
     
 }
+.page-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 250px;
+    padding-bottom: 20px; /* Ajusta el valor según sea necesario */
+  }
+  
+  .image-icon {
+    font-size: 100px;
+    opacity: 30%;
+    margin-bottom: 10px;
+  }
+  
+  ion-avatar {
+    width: 200px;
+    height: 160px;
+    --border-radius: 15px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    margin-bottom: 20px; /* Ajusta el valor según sea necesario */
+  }
+  ion-item.checkbox-item {
+    --inner-padding-start: 0px;
+    --padding-start: 0px;
+    --inner-margin-start: 0px;
+    --margin-start: 0px;
+    display: flex;
+    align-items: center;
+  }
+  
+  ion-label.checkbox-label {
+    margin-left: 4px; /* Ajusta este valor para acercar el texto al checkbox */
+    white-space: normal; /* Permitir que el texto se ajuste en varias líneas si es necesario */
+    display: flex;
+    align-items: center;
+  }
+  

@@ -87,6 +87,12 @@ ngOnInit() {
     }
   });
 }
+
+// =================== Tomar/Seleccionar Imagen ===================
+async takeImagen(){
+  const dataUrl = (await this.utilsSvc.takePicture('Selecciona una imagen')).dataUrl;
+  this.form.controls.image.setValue(dataUrl);
+}
 // In your component class
 toUpperCase(controlName: string) {
   const control = this.form.get(controlName);
