@@ -10,12 +10,22 @@
 
 <!-- ======== Salir de la sesión ========== -->
 <ion-content [fullscreen]="true">
-  <ion-fab  vertical="top" horizontal="end" slot="fixed" > 
-    <ion-button color="primary"(click)="signOut()">
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-button color="primary" (click)="signOut()">
       Cerrar sesión
     </ion-button>
   </ion-fab>
-</ion-content> 
+
+  <!-- ======== Barra de búsqueda ========== -->
+  <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterItems($event)"></ion-searchbar>
+
+  <!-- Lista de resultados de búsqueda -->
+  <ion-list>
+    <ion-item *ngFor="let item of filteredItems">
+      {{ item.name }}
+    </ion-item>
+  </ion-list>
+</ion-content>
 
 <ion-menu side="start" contentId="main-content">
   <ion-header>
@@ -26,22 +36,9 @@
   <ion-content>
     <ion-list>
       <ion-item routerLink="/main/add-card">Agregar nueva ficha</ion-item>
-      <ion-item routerLink="/main/search-card">Buscar ficha</ion-item>
-      <ion-item routerLink="/main/delete-card">Eliminar ficha</ion-item>
       <!-- Agrega más elementos de la lista aquí para más opciones en el menú -->
     </ion-list>
   </ion-content>
 </ion-menu>
 
 <ion-router-outlet id="main-content"></ion-router-outlet>
-
-<!-- ======== Crear nueva ficha =========-->
-<!-- 
-<ion-content>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addUpdateFile()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content> 
--->
