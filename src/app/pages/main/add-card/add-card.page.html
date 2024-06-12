@@ -9,8 +9,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  
+
+<ion-content [fullscreen]="true">
   <form [formGroup]="form" class="ion-no-padding ion-text-center" (ngSubmit)="submit()" (keypress.enter)="submit()">
     <!--============= Patente ===============-->
     <app-custom-imput
@@ -139,6 +139,72 @@
     <div class="validator" *ngIf="form.controls.modelo.errors && form.controls.modelo.touched">
         <div *ngIf="form.controls.modelo.errors?.['pattern']">El campo solo puede contener letras mayúsculas</div>
     </div>
+    <!--============= Costo ===============-->
+    <app-custom-imput
+    aria-autocomplete="costo"
+    [control]="form.controls.costo" 
+    type="text"
+    label="Costo"
+    ></app-custom-imput>
+    <div class="validator" *ngIf="form.controls.costo.errors && form.controls.costo.touched">
+        <div *ngIf="form.controls.costo.errors?.['pattern']">El costo debe ser un número</div>
+    </div>
+
+    <!--============= Fecha ===============-->
+    <app-custom-imput
+    aria-autocomplete="fecha"
+    [control]="form.controls.fecha" 
+    type="date"
+    label="Fecha"
+    ></app-custom-imput>
+    <div class="validator" *ngIf="form.controls.fecha.errors && form.controls.fecha.touched">
+        <div *ngIf="form.controls.fecha.errors?.['required']">La fecha es requerida</div>
+    </div>
+
+    <!--============= Hora ===============-->
+    <app-custom-imput
+    aria-autocomplete="hora"
+    [control]="form.controls.hora" 
+    type="time"
+    label="Hora"
+    ></app-custom-imput>
+    <div class="validator" *ngIf="form.controls.hora.errors && form.controls.hora.touched">
+        <div *ngIf="form.controls.hora.errors?.['required']">La hora es requerida</div>
+    </div>
+
+
+    <!--============= Fecha ===============-->
+    <app-custom-imput
+    aria-autocomplete="fecha"
+    [control]="form.controls.fecha" 
+    type="date"
+    label="Fecha"
+    ></app-custom-imput>
+    <div class="validator" *ngIf="form.controls.fecha.errors && form.controls.fecha.touched">
+        <div *ngIf="form.controls.fecha.errors?.['required']">La fecha es requerida</div>
+    </div>
+
+    <!--============= Hora ===============-->
+    <app-custom-imput
+    aria-autocomplete="hora"
+    [control]="form.controls.hora" 
+    type="time"
+    label="Hora"
+    ></app-custom-imput>
+    <div class="validator" *ngIf="form.controls.hora.errors && form.controls.hora.touched">
+        <div *ngIf="form.controls.hora.errors?.['required']">La hora es requerida</div>
+    </div>
+    <!--============= Costo ===============-->
+    <app-custom-imput
+    aria-autocomplete="costo"
+    [control]="form.controls.costo" 
+    type="text"
+    label="Costo"
+    ></app-custom-imput>
+    <div class="validator" *ngIf="form.controls.costo.errors && form.controls.costo.touched">
+        <div *ngIf="form.controls.costo.errors?.['pattern']">El costo debe ser un número</div>
+    </div>
+
     <!--============= Acciones realizadas ===============-->
     <div class="large-form">
         <ion-item class="ion-align-items-start">
@@ -148,7 +214,7 @@
       </div>
 
 
-      <!--============= Checkbox Form ===============-->
+    <!--============= Checkbox Form ===============-->
       <form [formGroup]="checkboxForm" horizontal="fixed" (ngSubmit)="onSubmit()">
         
         <ion-grid>
@@ -206,6 +272,7 @@
         </ion-grid>
       </form>
 
+    <br>
     <div class="page-content">
       <!--============= Si existe una imagen ===================-->
       <ion-avatar *ngIf="form.value.image">
@@ -222,10 +289,57 @@
       </ion-button>
     </div>
 
+    <form [formGroup]="checkboxForm" horizontal="fixed" (ngSubmit)="onSubmit()">
+      <ion-row>
+        
+        <ion-col size="12" size-md="6">
+          <ion-radio-group formControlName="pago">
+            <ion-item >
+              <div class="contenido">
+              <ion-radio slot="start" value="debito"></ion-radio>
+              <ion-label> Pago con débito</ion-label>
+            </div>
+            </ion-item>
+            <ion-item>
+              <div class="contenido">
+              <ion-radio slot="start" value="efectivo"></ion-radio>
+              <ion-label> Pago en efectivo</ion-label>
+            </div>
+            </ion-item>
+            <ion-item>
+              <div class="contenido">
+              <ion-radio slot="start" value="transferencia"></ion-radio>
+              <ion-label> Pago con transferencia</ion-label>
+            </div>
+            </ion-item>
+          </ion-radio-group>
+        </ion-col>
+      </ion-row>
+      <!-- New Radio Buttons for Document Options -->
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-radio-group formControlName="documento">
+            <ion-item>
+              <div class="contenido">
+              <ion-radio slot="start" value="boleta"></ion-radio>
+              <ion-label>Boleta</ion-label>
+            </div>
+            </ion-item>
+            <ion-item>
+              <div class="contenido">
+              <ion-radio slot="start" value="factura"></ion-radio>
+              <ion-label>Factura</ion-label>
+            </div>
+            </ion-item>
+          </ion-radio-group>
+        </ion-col>
+      </ion-row>
+    </form>
+
     <!--============= Botón para guardar la ficha ===============-->
     <ion-button mode="ios" class="ion-margin" type="submit" [disabled]="form.invalid"> 
       Agregar Ficha
     <ion-icon slot="end" name="checkmark-circle-outline"></ion-icon>
     </ion-button>
-      
-  
+
+<ion-content>

@@ -15,16 +15,21 @@ export class AddCardPage implements OnInit {
     patente: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(6), Validators.pattern('[A-Z0-9]{4,7}$')]),
     N_Ot: new FormControl('',[Validators.required,Validators.minLength(1), Validators.pattern('[0-9]{1,9}')]),
     id_Cliente: new FormControl('',Validators.required),
-    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    fono: new FormControl('',[Validators.required, Validators.pattern('[0-9]{8}$')]),
-    direccion: new FormControl('',[Validators.required, Validators.minLength(4)]),
-    year_Car: new FormControl('',[Validators.required, Validators.pattern('[0-9]{4}$')]),
-    km: new FormControl('',[Validators.required, Validators.pattern('^[0-9]+$')]),
-    car: new FormControl('',[Validators.required,]),
-    marca: new FormControl('',[Validators.required,]),
-    modelo: new FormControl('',[Validators.required,]),
+    name: new FormControl('', [Validators.minLength(4)]),
+    fono: new FormControl('',[Validators.pattern('[0-9]{8}$')]),
+    direccion: new FormControl('',[Validators.minLength(4)]),
+    year_Car: new FormControl('',[ Validators.pattern('[0-9]{4}$')]),
+    km: new FormControl('',[Validators.pattern('^[0-9]+$')]),
+    car: new FormControl('',),
+    marca: new FormControl('',),
+    modelo: new FormControl('',),
     image: new FormControl(''),
-    acciones: new FormControl('')
+    acciones: new FormControl(''),
+    costo: new FormControl('',[Validators.pattern('[0-9]{8}$')]),
+    fecha: new FormControl('',),
+    hora: new FormControl('',),
+    pago: new FormControl(''),
+    documento: new FormControl(''),
 });
   checkboxForm = new FormGroup({
     filtro: new FormControl(false),
@@ -42,12 +47,21 @@ export class AddCardPage implements OnInit {
     lectura_presiones_baja_val: new FormControl({ value: '', disabled: true }, Validators.required),
     lectura_presiones_alta_val: new FormControl({ value: '', disabled: true }, Validators.required),
     garantia: new FormControl(false),
+    pago_debito: new FormControl(false),
+    pago_efectivo: new FormControl(false),
+    pago_transferencia: new FormControl(false),
+    boleta: new FormControl(false),
+    factura: new FormControl(false),
   });
 
 firebaseSvc = inject(FirebaseService);
 utilsSvc = inject(UtilsService);
 
+user= {} as User;
+
 ngOnInit() {
+  this.user = this.utilsSvc.getFromLocal('user');
+
   this.checkboxForm.get('carga_gas')?.valueChanges.subscribe(value => {
     const control = this.checkboxForm.get('carga_gas_val');
     if (value) {
@@ -103,8 +117,17 @@ toUpperCase(controlName: string) {
 async submit() {
   if(this.form.valid){
 
+    let path = 'users/${this.user.uid}/cards';
     const loading = await this.utilsSvc.loading();
     await loading.present();
+
+
+    // ===== Subir imagen y obtener la url =====
+
+    let dataUrl = this.form.value.image;
+    let imagePath = '${this.user.uid}/${Date.now()}';
+    let imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+
     this.firebaseSvc.signUp(this.form.value as User).then(async res =>{
       await this.firebaseSvc.updateUser(this.form.value.name);
       let uid = res.user.uid;

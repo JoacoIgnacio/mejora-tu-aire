@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
   // ===== Cargar elementos desde Firebase =====
   async loadItems() {
     try {
-      this.items = await this.firebaseSvc.getCollection('items'); // Ajusta 'items' al nombre de tu colección
+    //this.items = await this.firebaseSvc.getCollection('items'); // Ajusta 'items' al nombre de tu colección
       this.filteredItems = this.items; // Inicialmente muestra todos los elementos
     } catch (error) {
       console.error('Error al cargar los elementos:', error);
