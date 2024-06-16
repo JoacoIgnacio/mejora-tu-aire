@@ -7,26 +7,6 @@
     <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<!-- ======== Salir de la sesión ========== -->
-<ion-content [fullscreen]="true">
-  <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-button color="primary" (click)="signOut()">
-      Cerrar sesión
-    </ion-button>
-  </ion-fab>
-
-  <!-- ======== Barra de búsqueda ========== -->
-  <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterItems($event)"></ion-searchbar>
-
-  <!-- Lista de resultados de búsqueda -->
-  <ion-list>
-    <ion-item *ngFor="let item of filteredItems">
-      {{ item.name }}
-    </ion-item>
-  </ion-list>
-</ion-content>
-
 <ion-menu side="start" contentId="main-content">
   <ion-header>
     <ion-toolbar color="primary">
@@ -36,10 +16,48 @@
   <ion-content>
     <ion-list>
       <ion-item routerLink="/main/add-card">Agregar nueva ficha</ion-item>
-      <!-- Agrega más elementos de la lista aquí para más opciones en el menú -->
     </ion-list>
   </ion-content>
 </ion-menu>
 
 <ion-router-outlet id="main-content"></ion-router-outlet>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let c of cards">
+      <ion-item>
+        <ion-avatar>
+          <img [src]="c.image" />
+        </ion-avatar>
+        <ion-label>
+          <div>ID del cliente: {{c.id_Cliente}}</div>
+          <div>Numero de OT: {{ c.N_Ot }}</div>
+          <div>Marca: {{c.marca}}</div>
+          <div>Modelo: {{c.modelo}}</div>
+          <div>Patente: {{c.patente}}</div>
+          <div>Cantidad de gas: {{c.carga_gas_val}}</div>
+          <div>Fecha: {{c.fecha}}</div>
+        </ion-label>
+      </ion-item>
+    
+      <!-- Botones de opciones -->
+      <ion-item-options side="end">
+        <!-- Botón de editar -->
+        <ion-item-option (click)="editarCard(c)">
+          <ion-icon name="create-outline"></ion-icon>
+          Editar
+        </ion-item-option>
+    
+        <!-- Botón de eliminar -->
+        <ion-item-option color="danger" (click)="eliminarCard(c)">
+          <ion-icon name="trash-outline"></ion-icon>
+          Eliminar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    
+  </ion-list>
+
+</ion-content>
+<!--  -->
 

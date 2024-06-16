@@ -67,7 +67,7 @@
     label="Fono"
     ></app-custom-imput>
     <div class="validator" *ngIf="form.controls.fono.errors && form.controls.fono.touched">
-        <div *ngIf="form.controls.fono.errors?.['pattern']">El fono debe tener 10 dígitos</div>
+        <div *ngIf="form.controls.fono.errors?.['pattern']">El fono debe tener 9 dígitos</div>
     </div>
 
     <!--============= Dirección ===============-->
@@ -172,39 +172,6 @@
         <div *ngIf="form.controls.hora.errors?.['required']">La hora es requerida</div>
     </div>
 
-
-    <!--============= Fecha ===============-->
-    <app-custom-imput
-    aria-autocomplete="fecha"
-    [control]="form.controls.fecha" 
-    type="date"
-    label="Fecha"
-    ></app-custom-imput>
-    <div class="validator" *ngIf="form.controls.fecha.errors && form.controls.fecha.touched">
-        <div *ngIf="form.controls.fecha.errors?.['required']">La fecha es requerida</div>
-    </div>
-
-    <!--============= Hora ===============-->
-    <app-custom-imput
-    aria-autocomplete="hora"
-    [control]="form.controls.hora" 
-    type="time"
-    label="Hora"
-    ></app-custom-imput>
-    <div class="validator" *ngIf="form.controls.hora.errors && form.controls.hora.touched">
-        <div *ngIf="form.controls.hora.errors?.['required']">La hora es requerida</div>
-    </div>
-    <!--============= Costo ===============-->
-    <app-custom-imput
-    aria-autocomplete="costo"
-    [control]="form.controls.costo" 
-    type="text"
-    label="Costo"
-    ></app-custom-imput>
-    <div class="validator" *ngIf="form.controls.costo.errors && form.controls.costo.touched">
-        <div *ngIf="form.controls.costo.errors?.['pattern']">El costo debe ser un número</div>
-    </div>
-
     <!--============= Acciones realizadas ===============-->
     <div class="large-form">
         <ion-item class="ion-align-items-start">
@@ -288,7 +255,7 @@
         Tomar/Seleccionar Imagen
       </ion-button>
     </div>
-
+<!--
     <form [formGroup]="checkboxForm" horizontal="fixed" (ngSubmit)="onSubmit()">
       <ion-row>
         
@@ -315,7 +282,7 @@
           </ion-radio-group>
         </ion-col>
       </ion-row>
-      <!-- New Radio Buttons for Document Options -->
+
       <ion-row>
         <ion-col size="12" size-md="6">
           <ion-radio-group formControlName="documento">
@@ -335,11 +302,12 @@
         </ion-col>
       </ion-row>
     </form>
-
+     -->
     <!--============= Botón para guardar la ficha ===============-->
     <ion-button mode="ios" class="ion-margin" type="submit" [disabled]="form.invalid"> 
       Agregar Ficha
     <ion-icon slot="end" name="checkmark-circle-outline"></ion-icon>
+    
     </ion-button>
 
 <ion-content>
