@@ -21,9 +21,6 @@ const routes: Routes = [
   {
     path: 'delete-card',
     loadChildren: () => import('./delete-card/delete-card.module').then( m => m.DeleteCardPageModule)
-  },  {
-    path: 'modify-card',
-    loadChildren: () => import('./modify-card/modify-card.module').then( m => m.ModifyCardPageModule)
   },
   {
     path: 'search-card',

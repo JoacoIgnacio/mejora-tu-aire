@@ -52,7 +52,7 @@ export class HomePage implements OnInit {
 
   // ===== Navegación para agregar/editar tarjeta =====
   editCard(card?: Card) {
-    this.router.navigate(['/main/add-card', { card }]);
+    this.router.navigate(['/main/add-card', { id: card.id }]);
   }
 
   // ===== Filtrar elementos =====

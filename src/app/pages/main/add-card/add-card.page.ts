@@ -63,11 +63,11 @@ export class AddCardPage implements OnInit {
 
   ngOnInit() {
     this.user = this.utilsSvc.getFromLocal('user');
-    if (this.card) {
-      this.form.patchValue(this.card); // Usar patchValue para cargar datos parciales
-      this.checkboxForm.patchValue(this.card); // Igualmente para el formulario de checkbox
+    
+    const cardId = this.route.snapshot.paramMap.get('id');
+    if (cardId) {
+      this.loadCard(cardId); // Cargar la ficha si hay un ID
     }
-  
 
     this.checkboxForm.get('carga_gas')?.valueChanges.subscribe(value => {
       const control = this.checkboxForm.get('carga_gas_val');
@@ -112,9 +112,41 @@ export class AddCardPage implements OnInit {
   // =================== Tomar/Seleccionar Imagen ===================
   async takeImagen() {
     const dataUrl = (await this.utilsSvc.takePicture('Selecciona una imagen')).dataUrl;
-    this.form.controls.image.setValue(dataUrl);
+
+    // Reducir el tamaño de la imagen antes de subirla
+    const resizedDataUrl = await this.resizeImage(dataUrl, 800, 800);
+    this.form.controls.image.setValue(resizedDataUrl);
   }
-  
+
+  async resizeImage(dataUrl: string, maxWidth: number, maxHeight: number): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = dataUrl;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+        
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height *= maxWidth / width));
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width *= maxHeight / height));
+            height = maxHeight;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg'));
+      };
+    });
+  }
 
   toUpperCase(controlName: string) {
     const control = this.form.get(controlName);
@@ -125,14 +157,13 @@ export class AddCardPage implements OnInit {
 
   async submit() {
     if (this.form.valid && this.checkboxForm.valid) {
-      if (this.card) {
+      if (this.card && this.card.id) {
         await this.updateCard();
       } else {
         await this.createProduct();
       }
     }
   }
-  
 
   async createProduct() {
     let path = `users/${this.user.uid}/cards`;
@@ -182,78 +213,88 @@ export class AddCardPage implements OnInit {
     });
   }
 
-  async updateCard() {
-    let path = `users/${this.user.uid}/cards/${this.card.id}`;
-    const loading = await this.utilsSvc.loading();
-    await loading.present();
-  
-    // Actualizar imagen si ha cambiado
-    if (this.form.value.image !== this.card.image) {
-      let dataUrl = this.form.value.image;
-      let imagePath = await this.firebaseSvc.getFilePath(this.card.image);
-      let imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
-      this.form.controls.image.setValue(imageUrl);
-    }
-  
-    // Combinar los valores de form y checkboxForm
-    const combinedFormData = {
-      ...this.form.value,
-      ...this.checkboxForm.value
-    };
-  
-    delete combinedFormData.id;
-  
-    // Actualizar documento en Firebase
-    this.firebaseSvc.updateDocument(path, combinedFormData).then(async res => {
-      this.utilsSvc.routerLink("/main/home");
+  private async updateCard() {
+    if (!this.card || !this.card.id) {
+      console.error('Card ID is undefined');
       this.utilsSvc.presentToast({
-        message: 'Ficha actualizada con éxito',
-        duration: 1500,
-        color: 'success',
-        position: 'middle',
-        icon: 'checkmark-circle-outline'
-      });
-  
-    }).catch(err => {
-      console.log(err);
-      this.utilsSvc.presentToast({
-        message: err.message,
+        message: 'No se pudo encontrar la ficha para actualizar',
         duration: 2500,
         color: 'primary',
         position: 'middle',
-        icon: 'alert-circle-outline'
+        icon: 'alert-circle-outline',
       });
-  
-    }).finally(() => {
-      loading.dismiss();
-    });
-  }
-  
+      return;
+    }
 
-  async loadCard(cardId: string) {
+    const path = `users/${this.user.uid}/cards/${this.card.id}`;
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
+
+    if (this.form.value.image !== this.card.image) {
+      const dataUrl = this.form.value.image;
+      const imagePath = await this.firebaseSvc.getFilePath(this.card.image);
+      const imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+      this.form.controls.image.setValue(imageUrl);
+    }
+
+    const combinedFormData = {
+      ...this.form.value,
+      ...this.checkboxForm.value,
+    };
+
+    delete combinedFormData.id;
+
+    this.firebaseSvc.updateDocument(path, combinedFormData)
+      .then(async res => {
+        this.utilsSvc.routerLink("/main/home");
+        this.utilsSvc.presentToast({
+          message: 'Ficha actualizada con éxito',
+          duration: 1500,
+          color: 'success',
+          position: 'middle',
+          icon: 'checkmark-circle-outline',
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        this.utilsSvc.presentToast({
+          message: err.message,
+          duration: 2500,
+          color: 'primary',
+          position: 'middle',
+          icon: 'alert-circle-outline',
+        });
+      })
+      .finally(() => {
+        loading.dismiss();
+      });
+  }
+
+  private async loadCard(cardId: string) {
     const path = `users/${this.user.uid}/cards/${cardId}`;
     const loading = await this.utilsSvc.loading();
     await loading.present();
-  
-    // Obtener documento de Firebase
-    this.firebaseSvc.getDocument(path).then(card => {
-      this.card = card;
-      this.form.patchValue(card); // Cargar datos al formulario
-      this.checkboxForm.patchValue(card); // Cargar datos al formulario de checkbox
-    }).catch(err => {
-      console.log(err);
-      this.utilsSvc.presentToast({
-        message: err.message,
-        duration: 2500,
-        color: 'primary',
-        position: 'middle',
-        icon: 'alert-circle-outline'
+
+    this.firebaseSvc.getDocument(path)
+      .then(card => {
+        this.card = { id: cardId, ...card }; // Asegúrate de que la tarjeta tenga el ID
+        this.form.patchValue(card);
+        this.checkboxForm.patchValue(card);
+      })
+      .catch(err => {
+        console.error(err);
+        this.utilsSvc.presentToast({
+          message: err.message,
+          duration: 2500,
+          color: 'primary',
+          position: 'middle',
+          icon: 'alert-circle-outline',
+        });
+      })
+      .finally(() => {
+        loading.dismiss();
       });
-    }).finally(() => {
-      loading.dismiss();
-    });
   }
-  
 
   onSubmit() {
     console.log(this.checkboxForm.value);
