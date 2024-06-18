@@ -16,6 +16,10 @@
   <ion-content>
     <ion-list>
       <ion-item routerLink="/main/add-card">Agregar nueva ficha</ion-item>
+      <ion-item class="sign-out-button" lines="none" (click)="signOut()">
+        <ion-icon class="sign-out-icon" slot="start" name="log-out-outline"></ion-icon>
+        Cerrar sesión
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
@@ -43,13 +47,13 @@
       <!-- Botones de opciones -->
       <ion-item-options side="end">
         <!-- Botón de editar -->
-        <ion-item-option (click)="editarCard(c)">
+        <ion-item-option (click)="editCard(c)">
           <ion-icon name="create-outline"></ion-icon>
           Editar
         </ion-item-option>
     
         <!-- Botón de eliminar -->
-        <ion-item-option color="danger" (click)="eliminarCard(c)">
+        <ion-item-option color="danger">
           <ion-icon name="trash-outline"></ion-icon>
           Eliminar
         </ion-item-option>

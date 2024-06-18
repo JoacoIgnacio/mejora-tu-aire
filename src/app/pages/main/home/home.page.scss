@@ -1,0 +1,17 @@
+/* CSS */
+.sign-out-button {
+    --background: #3056ff; /* Azul original */
+    color: white;
+    margin-top: 20px; /* Espaciado superior para separarlo de otros elementos */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  
+  .sign-out-button:hover {
+    --background: #ff3b30; /* Cambia a rojo al pasar el mouse */
+    cursor: pointer; /* Cambia el cursor a una mano para indicar que es clickeable */
+  }
+  
+  .sign-out-icon {
+    --ionicon-stroke-width: 36px; /* Hace el icono más grueso */
+    margin-right: 8px; /* Espaciado entre el icono y el texto */
+  }

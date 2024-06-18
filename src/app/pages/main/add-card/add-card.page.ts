@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-card',
@@ -55,11 +56,18 @@ export class AddCardPage implements OnInit {
 
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
+  route = inject(ActivatedRoute);
 
   user = {} as User;
+  card: any;
 
   ngOnInit() {
     this.user = this.utilsSvc.getFromLocal('user');
+    if (this.card) {
+      this.form.patchValue(this.card); // Usar patchValue para cargar datos parciales
+      this.checkboxForm.patchValue(this.card); // Igualmente para el formulario de checkbox
+    }
+  
 
     this.checkboxForm.get('carga_gas')?.valueChanges.subscribe(value => {
       const control = this.checkboxForm.get('carga_gas_val');
@@ -106,8 +114,8 @@ export class AddCardPage implements OnInit {
     const dataUrl = (await this.utilsSvc.takePicture('Selecciona una imagen')).dataUrl;
     this.form.controls.image.setValue(dataUrl);
   }
+  
 
-  // In your component class
   toUpperCase(controlName: string) {
     const control = this.form.get(controlName);
     if (control) {
@@ -117,53 +125,135 @@ export class AddCardPage implements OnInit {
 
   async submit() {
     if (this.form.valid && this.checkboxForm.valid) {
-      let path = `users/${this.user.uid}/cards`;
-      const loading = await this.utilsSvc.loading();
-      await loading.present();
-  
-      let imageUrl = '';
-  
-      // ===== Subir imagen y obtener la url si existe una imagen =====
-      let dataUrl = this.form.value.image;
-      if (dataUrl) {
-        let imagePath = `${this.user.uid}/${Date.now()}`;
-        imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+      if (this.card) {
+        await this.updateCard();
+      } else {
+        await this.createProduct();
       }
-      this.form.controls.image.setValue(imageUrl);
-  
-      // Combinar los valores de form y checkboxForm
-      const combinedFormData = {
-        ...this.form.value,
-        ...this.checkboxForm.value
-      };
-  
-      delete combinedFormData.id;
-  
-      this.firebaseSvc.addDocument(path, combinedFormData).then(async res => {
-        this.utilsSvc.routerLink("/main/home");
-        this.utilsSvc.presentToast({
-          message: 'Ficha creada con éxito',
-          duration: 1500,
-          color: 'success',
-          position: 'middle',
-          icon: 'checkmark-circle-outline'
-        });
-  
-      }).catch(err => {
-        console.log(err);
-        this.utilsSvc.presentToast({
-          message: err.message,
-          duration: 2500,
-          color: 'primary',
-          position: 'middle',
-          icon: 'alert-circle-outline'
-        });
-  
-      }).finally(() => {
-        loading.dismiss();
-      });
     }
   }
+  
+
+  async createProduct() {
+    let path = `users/${this.user.uid}/cards`;
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
+
+    let imageUrl = '';
+
+    // ===== Subir imagen y obtener la url si existe una imagen =====
+    let dataUrl = this.form.value.image;
+    if (dataUrl) {
+      let imagePath = `${this.user.uid}/${Date.now()}`;
+      imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+    }
+    this.form.controls.image.setValue(imageUrl);
+
+    // Combinar los valores de form y checkboxForm
+    const combinedFormData = {
+      ...this.form.value,
+      ...this.checkboxForm.value
+    };
+
+    delete combinedFormData.id;
+
+    this.firebaseSvc.addDocument(path, combinedFormData).then(async res => {
+      this.utilsSvc.routerLink("/main/home");
+      this.utilsSvc.presentToast({
+        message: 'Ficha creada con éxito',
+        duration: 1500,
+        color: 'success',
+        position: 'middle',
+        icon: 'checkmark-circle-outline'
+      });
+
+    }).catch(err => {
+      console.log(err);
+      this.utilsSvc.presentToast({
+        message: err.message,
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+
+    }).finally(() => {
+      loading.dismiss();
+    });
+  }
+
+  async updateCard() {
+    let path = `users/${this.user.uid}/cards/${this.card.id}`;
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
+  
+    // Actualizar imagen si ha cambiado
+    if (this.form.value.image !== this.card.image) {
+      let dataUrl = this.form.value.image;
+      let imagePath = await this.firebaseSvc.getFilePath(this.card.image);
+      let imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+      this.form.controls.image.setValue(imageUrl);
+    }
+  
+    // Combinar los valores de form y checkboxForm
+    const combinedFormData = {
+      ...this.form.value,
+      ...this.checkboxForm.value
+    };
+  
+    delete combinedFormData.id;
+  
+    // Actualizar documento en Firebase
+    this.firebaseSvc.updateDocument(path, combinedFormData).then(async res => {
+      this.utilsSvc.routerLink("/main/home");
+      this.utilsSvc.presentToast({
+        message: 'Ficha actualizada con éxito',
+        duration: 1500,
+        color: 'success',
+        position: 'middle',
+        icon: 'checkmark-circle-outline'
+      });
+  
+    }).catch(err => {
+      console.log(err);
+      this.utilsSvc.presentToast({
+        message: err.message,
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+  
+    }).finally(() => {
+      loading.dismiss();
+    });
+  }
+  
+
+  async loadCard(cardId: string) {
+    const path = `users/${this.user.uid}/cards/${cardId}`;
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
+  
+    // Obtener documento de Firebase
+    this.firebaseSvc.getDocument(path).then(card => {
+      this.card = card;
+      this.form.patchValue(card); // Cargar datos al formulario
+      this.checkboxForm.patchValue(card); // Cargar datos al formulario de checkbox
+    }).catch(err => {
+      console.log(err);
+      this.utilsSvc.presentToast({
+        message: err.message,
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+    }).finally(() => {
+      loading.dismiss();
+    });
+  }
+  
 
   onSubmit() {
     console.log(this.checkboxForm.value);
