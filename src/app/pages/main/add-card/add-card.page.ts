@@ -225,50 +225,61 @@ export class AddCardPage implements OnInit {
       });
       return;
     }
-
+  
     const path = `users/${this.user.uid}/cards/${this.card.id}`;
     const loading = await this.utilsSvc.loading();
     await loading.present();
-
-    if (this.form.value.image !== this.card.image) {
-      const dataUrl = this.form.value.image;
-      const imagePath = await this.firebaseSvc.getFilePath(this.card.image);
-      const imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
-      this.form.controls.image.setValue(imageUrl);
-    }
-
-    const combinedFormData = {
-      ...this.form.value,
-      ...this.checkboxForm.value,
-    };
-
-    delete combinedFormData.id;
-
-    this.firebaseSvc.updateDocument(path, combinedFormData)
-      .then(async res => {
-        this.utilsSvc.routerLink("/main/home");
-        this.utilsSvc.presentToast({
-          message: 'Ficha actualizada con éxito',
-          duration: 1500,
-          color: 'success',
-          position: 'middle',
-          icon: 'checkmark-circle-outline',
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        this.utilsSvc.presentToast({
-          message: err.message,
-          duration: 2500,
-          color: 'primary',
-          position: 'middle',
-          icon: 'alert-circle-outline',
-        });
-      })
-      .finally(() => {
-        loading.dismiss();
+  
+    try {
+      if (this.form.value.image !== this.card.image) {
+        let imagePath = '';
+        if (this.card.image) {
+          // Obtener el path de la imagen actual
+          imagePath = await this.firebaseSvc.getFilePath(this.card.image);
+        } else {
+          // Crear un nuevo path para la imagen
+          imagePath = `${this.user.uid}/${Date.now()}`;
+        }
+        
+        // Subir la nueva imagen y obtener su URL
+        const imageUrl = await this.firebaseSvc.uploadImage(imagePath, this.form.value.image);
+        
+        // Actualizar el valor de la imagen en el formulario
+        this.form.controls.image.setValue(imageUrl);
+      }
+  
+      const combinedFormData = {
+        ...this.form.value,
+        ...this.checkboxForm.value,
+      };
+  
+      delete combinedFormData.id;
+  
+      await this.firebaseSvc.updateDocument(path, combinedFormData);
+  
+      this.utilsSvc.routerLink("/main/home");
+      this.utilsSvc.presentToast({
+        message: 'Ficha actualizada con éxito',
+        duration: 1500,
+        color: 'success',
+        position: 'middle',
+        icon: 'checkmark-circle-outline',
       });
+    } catch (error) {
+      console.error('Error updating card:', error);
+      this.utilsSvc.presentToast({
+        message: error.message || 'Error al actualizar la ficha',
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline',
+      });
+    } finally {
+      loading.dismiss();
+    }
   }
+  
+  
 
   private async loadCard(cardId: string) {
     const path = `users/${this.user.uid}/cards/${cardId}`;

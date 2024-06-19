@@ -94,4 +94,51 @@ export class HomePage implements OnInit, OnDestroy {
   user(): User {
     return this.utilsSvc.getFromLocal('user');
   }
+
+  // ===== Elimnar ficha =====
+
+  async deleteCard(card: Card) {
+    let path = `users/${this.user().uid}/cards/${card.id}`;
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
+  
+    try {
+      // Verificar si la tarjeta tiene una imagen y obtener el path de la imagen
+      if (card.image) {
+        const imagePath = await this.firebaseSvc.getFilePath(card.image);
+        
+        // Eliminar la imagen asociada
+        await this.firebaseSvc.deleteFile(imagePath);
+      }
+  
+      // Eliminar el documento de Firestore
+      await this.firebaseSvc.deleteDocument(path);
+  
+      // Actualizar la lista de tarjetas filtrando la tarjeta eliminada
+      this.cards = this.cards.filter(c => c.id !== card.id);
+  
+      this.utilsSvc.presentToast({
+        message: 'Producto eliminado con éxito',
+        duration: 1500,
+        color: 'success',
+        position: 'middle',
+        icon: 'checkmark-circle-outline'
+      });
+  
+    } catch (error) {
+      console.error('Error deleting card:', error);
+      this.utilsSvc.presentToast({
+        message: error.message || 'Error al eliminar el producto',
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+  
+    } finally {
+      loading.dismiss();
+    }
+  }
+  
+
 }
