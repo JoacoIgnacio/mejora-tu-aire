@@ -1,17 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { User } from 'firebase/auth';
 import { Card } from 'src/app/models/card.model';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
   router = inject(Router);
@@ -21,9 +21,17 @@ export class HomePage implements OnInit {
   filteredItems: any[] = [];
 
   cards: Card[] = [];
+  reloadSub: Subscription;
 
   ngOnInit() {
     this.loadItems();
+    this.reloadSub = this.firebaseSvc.reloadSubject.subscribe(() => {
+      this.loadItems();
+    });
+  }
+
+  ngOnDestroy() {
+    this.reloadSub.unsubscribe();
   }
 
   // ===== Cargar elementos desde Firebase =====
@@ -31,7 +39,6 @@ export class HomePage implements OnInit {
     try {
       // Llama a la función que obtiene las tarjetas del usuario
       await this.getCard();
-      //this.items = await this.firebaseSvc.getCollection('items'); // Ajusta 'items' al nombre de tu colección
       this.filteredItems = this.cards; // Inicialmente muestra todos los elementos
     } catch (error) {
       console.error('Error al cargar los elementos:', error);
@@ -47,13 +54,26 @@ export class HomePage implements OnInit {
         this.cards = res;
         sub.unsubscribe();
       }
-    })
+    });
   }
 
   // ===== Navegación para agregar/editar tarjeta =====
-  editCard(card?: Card) {
-    this.router.navigate(['/main/add-card', { id: card.id }]);
+  async editCard(card?: Card) {
+    let success = await this.router.navigate(['/main/add-card', { id: card.id }]);
+    if (success) {
+      this.firebaseSvc.reloadSubject.next(); // Emitir evento de recarga
+    }
   }
+
+  // ===== Navegación para ver tarjeta =====
+  viewCard(card) {
+    this.router.navigate(['/main/view-card'], {
+      queryParams: {
+        card: JSON.stringify(card)
+      }
+    });
+  }
+  
 
   // ===== Filtrar elementos =====
   filterItems(event: any) {

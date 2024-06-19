@@ -1,0 +1,118 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/main/home">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title horizontal="fixed">Ver Ficha</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-item>
+      <ion-label>Patente:</ion-label>
+      <ion-text>{{ card.patente }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Numero de OT:</ion-label>
+      <ion-text>{{ card.N_Ot }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>ID Cliente:</ion-label>
+      <ion-text>{{ card.id_Cliente }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Nombre:</ion-label>
+      <ion-text>{{ card.name }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fono:</ion-label>
+      <ion-text>{{ card.fono }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Dirección:</ion-label>
+      <ion-text>{{ card.direccion }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Año del auto:</ion-label>
+      <ion-text>{{ card.year_Car }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Kilometraje:</ion-label>
+      <ion-text>{{ card.km }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Auto:</ion-label>
+      <ion-text>{{ card.car }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Marca:</ion-label>
+      <ion-text>{{ card.marca }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Modelo:</ion-label>
+      <ion-text>{{ card.modelo }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Costo:</ion-label>
+      <ion-text>{{ card.costo }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fecha:</ion-label>
+      <ion-text>{{ card.fecha }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Hora:</ion-label>
+      <ion-text>{{ card.hora }}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Acciones Realizadas:</ion-label>
+      <ion-text>{{ card.acciones }}</ion-text>
+    </ion-item>
+   <!-- Mostrar checkboxes -->
+   <ion-list>
+    <ion-item>
+      <ion-label>Filtro de polen cabina</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.filtro"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Prueba de fugas con gas nitrógeno</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.fugas"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Vacío de sistema con bomba</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.vacio_bomba"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Inyección de aceite PAG sintético</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.inyeccion_aceite"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Inyección de tinta UV</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.inyeccion_tinta"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Carga de gas R134a: {{card.carga_gas_val}} gr</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.carga_gas"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Prueba de funcionamiento a: {{card.prueba_funcionamiento_val}} rpm</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.prueba_funcionamiento"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Lecturas de T* de difusores de aire: {{card.lectura_difusores_val}} lectura</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.lectura_difusores"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Lectura de presiones de sistema -Presión Baja: {{card.lectura_presiones_baja_val}} psi -Presión Alta: {{card.lectura_presiones_alta_val}} psi</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.lectura_presiones"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Garantía de 3 meses</ion-label>
+      <ion-checkbox slot="start" disabled [checked]="checkboxValues.garantia"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+  </div>
+</ion-content>

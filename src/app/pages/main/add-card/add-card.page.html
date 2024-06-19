@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="home"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title horizontal="fixed">Agregar nueva Ficha</ion-title>
+    <ion-title horizontal="fixed">{{card ? 'Actualizar Ficha' : 'Agregar Ficha' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -305,7 +305,7 @@
      -->
     <!--============= Botón para guardar la ficha ===============-->
     <ion-button mode="ios" class="ion-margin" type="submit" [disabled]="form.invalid"> 
-      Agregar Ficha
+      {{card ? 'Actualizar Ficha' : 'Agregar Ficha' }}
     <ion-icon slot="end" name="checkmark-circle-outline"></ion-icon>
     
     </ion-button>
