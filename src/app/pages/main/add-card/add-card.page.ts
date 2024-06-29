@@ -17,7 +17,7 @@ export class AddCardPage implements OnInit {
     N_Ot: new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern('[0-9]{1,9}')]),
     id_Cliente: new FormControl('', Validators.required),
     name: new FormControl('', [Validators.minLength(4)]),
-    fono: new FormControl('', [Validators.pattern('[0-9]{8}$')]),
+    fono: new FormControl('', [Validators.pattern('[0-9]{9}$')]),
     direccion: new FormControl('', [Validators.minLength(4)]),
     year_Car: new FormControl('', [Validators.pattern('[0-9]{4}$')]),
     km: new FormControl('', [Validators.pattern('^[0-9]+$')]),
@@ -32,8 +32,8 @@ export class AddCardPage implements OnInit {
   });
 
   checkboxForm = new FormGroup({
-    filtro: new FormControl(false),
-    fugas: new FormControl(false),
+    filtro: new FormControl(true),
+    fugas: new FormControl(true),
     vacio_bomba: new FormControl(false),
     inyeccion_aceite: new FormControl(false),
     inyeccion_tinta: new FormControl(false),
@@ -54,6 +54,7 @@ export class AddCardPage implements OnInit {
     factura: new FormControl(false),
   });
 
+  
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
   route = inject(ActivatedRoute);
@@ -63,12 +64,12 @@ export class AddCardPage implements OnInit {
 
   ngOnInit() {
     this.user = this.utilsSvc.getFromLocal('user');
-    
+   
     const cardId = this.route.snapshot.paramMap.get('id');
     if (cardId) {
       this.loadCard(cardId); // Cargar la ficha si hay un ID
     }
-
+  
     this.checkboxForm.get('carga_gas')?.valueChanges.subscribe(value => {
       const control = this.checkboxForm.get('carga_gas_val');
       if (value) {
@@ -77,7 +78,7 @@ export class AddCardPage implements OnInit {
         control?.disable();
       }
     });
-
+  
     this.checkboxForm.get('prueba_funcionamiento')?.valueChanges.subscribe(value => {
       const control = this.checkboxForm.get('prueba_funcionamiento_val');
       if (value) {
@@ -86,7 +87,7 @@ export class AddCardPage implements OnInit {
         control?.disable();
       }
     });
-
+  
     this.checkboxForm.get('lectura_difusores')?.valueChanges.subscribe(value => {
       const control = this.checkboxForm.get('lectura_difusores_val');
       if (value) {
@@ -95,7 +96,7 @@ export class AddCardPage implements OnInit {
         control?.disable();
       }
     });
-
+  
     this.checkboxForm.get('lectura_presiones')?.valueChanges.subscribe(value => {
       const controlBaja = this.checkboxForm.get('lectura_presiones_baja_val');
       const controlAlta = this.checkboxForm.get('lectura_presiones_alta_val');
@@ -107,7 +108,11 @@ export class AddCardPage implements OnInit {
         controlAlta?.disable();
       }
     });
+  
+    // Inicializar valores por defecto para los campos con valores deshabilitados
+    this.initializeCheckboxDefaults();
   }
+  
 
   // =================== Tomar/Seleccionar Imagen ===================
   async takeImagen() {
@@ -169,9 +174,9 @@ export class AddCardPage implements OnInit {
     let path = `users/${this.user.uid}/cards`;
     const loading = await this.utilsSvc.loading();
     await loading.present();
-
+  
     let imageUrl = '';
-
+  
     // ===== Subir imagen y obtener la url si existe una imagen =====
     let dataUrl = this.form.value.image;
     if (dataUrl) {
@@ -179,15 +184,15 @@ export class AddCardPage implements OnInit {
       imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
     }
     this.form.controls.image.setValue(imageUrl);
-
+  
     // Combinar los valores de form y checkboxForm
     const combinedFormData = {
       ...this.form.value,
       ...this.checkboxForm.value
     };
-
+  
     delete combinedFormData.id;
-
+  
     this.firebaseSvc.addDocument(path, combinedFormData).then(async res => {
       this.utilsSvc.routerLink("/main/home");
       this.utilsSvc.presentToast({
@@ -197,7 +202,12 @@ export class AddCardPage implements OnInit {
         position: 'middle',
         icon: 'checkmark-circle-outline'
       });
-
+  
+      // Reiniciar el formulario después de la creación exitosa
+      this.form.reset();
+      this.checkboxForm.reset();
+      this.initializeCheckboxDefaults();
+  
     }).catch(err => {
       console.log(err);
       this.utilsSvc.presentToast({
@@ -207,10 +217,19 @@ export class AddCardPage implements OnInit {
         position: 'middle',
         icon: 'alert-circle-outline'
       });
-
+  
     }).finally(() => {
       loading.dismiss();
     });
+  }
+  
+  // Reiniciar valores por defecto para los campos con valores deshabilitados
+  initializeCheckboxDefaults() {
+    this.checkboxForm.get('carga_gas_val')?.disable();
+    this.checkboxForm.get('prueba_funcionamiento_val')?.disable();
+    this.checkboxForm.get('lectura_difusores_val')?.disable();
+    this.checkboxForm.get('lectura_presiones_baja_val')?.disable();
+    this.checkboxForm.get('lectura_presiones_alta_val')?.disable();
   }
 
   private async updateCard() {

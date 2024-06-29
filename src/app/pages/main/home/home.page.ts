@@ -5,6 +5,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { User } from 'firebase/auth';
 import { Card } from 'src/app/models/card.model';
 import { Subscription } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +16,10 @@ export class HomePage implements OnInit, OnDestroy {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
   router = inject(Router);
+  alertController = inject(AlertController);
 
   searchQuery: string = '';
+  searchField: string = 'id_Cliente'; // Campo seleccionado para búsqueda (por defecto ID de Cliente)
   items: any[] = []; // Asume que los elementos tienen una propiedad 'name'
   filteredItems: any[] = [];
 
@@ -52,6 +55,7 @@ export class HomePage implements OnInit, OnDestroy {
       next: (res: any) => {
         console.log(res);
         this.cards = res;
+        this.filteredItems = this.cards;
         sub.unsubscribe();
       }
     });
@@ -73,13 +77,14 @@ export class HomePage implements OnInit, OnDestroy {
       }
     });
   }
-  
 
   // ===== Filtrar elementos =====
   filterItems(event: any) {
     const query = event.target.value.toLowerCase();
-    if (query && query.trim() !== '') {
-      this.filteredItems = this.cards.filter(card => card.name.toLowerCase().includes(query));
+    if (query && query.trim() !== '' && this.searchField) {
+      this.filteredItems = this.cards.filter(card => 
+        String(card[this.searchField]).toLowerCase().includes(query)
+      );
     } else {
       this.filteredItems = this.cards; // Si no hay consulta, muestra todos los elementos
     }
@@ -95,28 +100,52 @@ export class HomePage implements OnInit, OnDestroy {
     return this.utilsSvc.getFromLocal('user');
   }
 
-  // ===== Elimnar ficha =====
+  // ===== Mostrar alerta de confirmación antes de eliminar ficha =====
+  async confirmDelete(card: Card) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar esta ficha?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Eliminar',
+          handler: () => {
+            this.deleteCard(card);
+          }
+        }
+      ]
+    });
 
+    await alert.present();
+  }
+
+  // ===== Eliminar ficha =====
   async deleteCard(card: Card) {
     let path = `users/${this.user().uid}/cards/${card.id}`;
     const loading = await this.utilsSvc.loading();
     await loading.present();
-  
+
     try {
       // Verificar si la tarjeta tiene una imagen y obtener el path de la imagen
       if (card.image) {
         const imagePath = await this.firebaseSvc.getFilePath(card.image);
-        
+
         // Eliminar la imagen asociada
         await this.firebaseSvc.deleteFile(imagePath);
       }
-  
+
       // Eliminar el documento de Firestore
       await this.firebaseSvc.deleteDocument(path);
-  
+
       // Actualizar la lista de tarjetas filtrando la tarjeta eliminada
       this.cards = this.cards.filter(c => c.id !== card.id);
-  
+
       this.utilsSvc.presentToast({
         message: 'Producto eliminado con éxito',
         duration: 1500,
@@ -124,7 +153,7 @@ export class HomePage implements OnInit, OnDestroy {
         position: 'middle',
         icon: 'checkmark-circle-outline'
       });
-  
+
     } catch (error) {
       console.error('Error deleting card:', error);
       this.utilsSvc.presentToast({
@@ -134,11 +163,14 @@ export class HomePage implements OnInit, OnDestroy {
         position: 'middle',
         icon: 'alert-circle-outline'
       });
-  
+
     } finally {
       loading.dismiss();
     }
   }
-  
 
+  // ===== Refrescar la página =====
+  refreshPage() {
+    this.loadItems();
+  }
 }

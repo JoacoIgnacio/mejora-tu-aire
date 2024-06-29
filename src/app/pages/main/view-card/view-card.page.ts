@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-view-card',
@@ -41,5 +43,19 @@ export class ViewCardPage implements OnInit {
       lectura_presiones_alta_val: this.card.lectura_presiones_alta_val,
       garantia: this.card.garantia
     };
+  }
+
+  // Función para descargar la vista como PDF
+  downloadPDF() {
+    const DATA: any = document.getElementById('card-detail');
+    html2canvas(DATA).then(canvas => {
+      const fileWidth = 208;
+      const fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, 0, fileWidth, fileHeight);
+      PDF.save('ficha.pdf');
+    });
   }
 }
