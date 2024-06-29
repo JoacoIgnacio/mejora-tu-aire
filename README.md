@@ -12,7 +12,7 @@ Sugerencias:
 
 En la terminal de VisualStudio es necesario poner el siguiente comando para instalar las librerias que permiten usar la camara: npm install @capacitor/camera 
 luego de usar es comando proceder a usar el siguiente: npm install @ionic/pwa-elements
-
+Instalar $ npm install jspdf html2canvas para poder transformar a pdf.
 Ejecución: Para ejecutar y poder ver el programa es necesario abrir una terminal en VisualStudio en la cual pondremos el siguiente comando: ionic serve 
            Si todo va de manera correcta se creara una carpeta .angular y en la terminal deberia aparecer esto: 
          
