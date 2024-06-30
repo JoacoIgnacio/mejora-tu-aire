@@ -48,7 +48,10 @@
     <ion-item-sliding *ngFor="let c of filteredItems">
       <ion-item>
         <ion-avatar>
-          <img [src]="c.image" />
+          <img *ngIf="c.image; else noImage" [src]="c.image" />
+          <ng-template #noImage>
+            <ion-icon name="image-outline" size="large"></ion-icon>
+          </ng-template>
         </ion-avatar>
         <ion-label>
           <div>ID del cliente: {{c.id_Cliente}}</div>
@@ -82,3 +85,5 @@
     </ion-item-sliding>
   </ion-list>
 </ion-content>
+
+

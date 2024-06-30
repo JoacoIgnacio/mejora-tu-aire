@@ -15,7 +15,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="ion-padding" id="card-detail">
+  <div class="ion-padding">
     <ion-item>
       <ion-label>Patente:</ion-label>
       <ion-text>{{ card.patente }}</ion-text>
@@ -76,7 +76,6 @@
       <ion-label>Acciones Realizadas:</ion-label>
       <ion-text>{{ card.acciones }}</ion-text>
     </ion-item>
-    <!-- Mostrar checkboxes -->
     <ion-list>
       <ion-item>
         <ion-label>Filtro de polen cabina</ion-label>
@@ -111,7 +110,7 @@
         <ion-checkbox slot="start" disabled [checked]="checkboxValues.lectura_difusores"></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Lectura de presiones de sistema -Presión Baja: {{card.lectura_presiones_baja_val}} psi -Presión Alta: {{card.lectura_presiones_alta_val}} psi</ion-label>
+        <ion-label>Lectura de presiones de sistema - Presión Baja: {{card.lectura_presiones_baja_val}} psi - Presión Alta: {{card.lectura_presiones_alta_val}} psi</ion-label>
         <ion-checkbox slot="start" disabled [checked]="checkboxValues.lectura_presiones"></ion-checkbox>
       </ion-item>
       <ion-item>

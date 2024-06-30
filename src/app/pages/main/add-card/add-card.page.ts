@@ -32,8 +32,8 @@ export class AddCardPage implements OnInit {
   });
 
   checkboxForm = new FormGroup({
-    filtro: new FormControl(true),
-    fugas: new FormControl(true),
+    filtro: new FormControl(false),
+    fugas: new FormControl(false),
     vacio_bomba: new FormControl(false),
     inyeccion_aceite: new FormControl(false),
     inyeccion_tinta: new FormControl(false),
