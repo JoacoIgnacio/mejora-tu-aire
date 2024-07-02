@@ -4,6 +4,8 @@ import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { ActivatedRoute } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { Card } from 'src/app/models/card.model';
 
 @Component({
   selector: 'app-add-card',
@@ -54,7 +56,6 @@ export class AddCardPage implements OnInit {
     factura: new FormControl(false),
   });
 
-  
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
   route = inject(ActivatedRoute);
@@ -112,7 +113,6 @@ export class AddCardPage implements OnInit {
     // Inicializar valores por defecto para los campos con valores deshabilitados
     this.initializeCheckboxDefaults();
   }
-  
 
   // =================== Tomar/Seleccionar Imagen ===================
   async takeImagen() {
@@ -170,13 +170,33 @@ export class AddCardPage implements OnInit {
     }
   }
 
+  private async checkIfOtExists(ot: number): Promise<boolean> {
+    const path = `users/${this.user.uid}/cards`;
+    const querySnapshot = await this.firebaseSvc.getCollectionData(path).pipe(first()).toPromise();
+    return querySnapshot.some((card: Card) => card.N_Ot === ot);
+  }
+
   async createProduct() {
+    const ot = Number(this.form.value.N_Ot); // Convertir el valor de N_Ot a número
+    const otExists = await this.checkIfOtExists(ot);
+
+    if (otExists) {
+      this.utilsSvc.presentToast({
+        message: 'El número de OT ya existe. Por favor, elija un número diferente.',
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+      return;
+    }
+
     let path = `users/${this.user.uid}/cards`;
     const loading = await this.utilsSvc.loading();
     await loading.present();
-  
+
     let imageUrl = '';
-  
+
     // ===== Subir imagen y obtener la url si existe una imagen =====
     let dataUrl = this.form.value.image;
     if (dataUrl) {
@@ -184,15 +204,15 @@ export class AddCardPage implements OnInit {
       imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
     }
     this.form.controls.image.setValue(imageUrl);
-  
+
     // Combinar los valores de form y checkboxForm
     const combinedFormData = {
       ...this.form.value,
       ...this.checkboxForm.value
     };
-  
+
     delete combinedFormData.id;
-  
+
     this.firebaseSvc.addDocument(path, combinedFormData).then(async res => {
       this.utilsSvc.routerLink("/main/home");
       this.utilsSvc.presentToast({
@@ -202,12 +222,12 @@ export class AddCardPage implements OnInit {
         position: 'middle',
         icon: 'checkmark-circle-outline'
       });
-  
+
       // Reiniciar el formulario después de la creación exitosa
       this.form.reset();
       this.checkboxForm.reset();
       this.initializeCheckboxDefaults();
-  
+
     }).catch(err => {
       console.log(err);
       this.utilsSvc.presentToast({
@@ -217,12 +237,12 @@ export class AddCardPage implements OnInit {
         position: 'middle',
         icon: 'alert-circle-outline'
       });
-  
+
     }).finally(() => {
       loading.dismiss();
     });
   }
-  
+
   // Reiniciar valores por defecto para los campos con valores deshabilitados
   initializeCheckboxDefaults() {
     this.checkboxForm.get('carga_gas_val')?.disable();
@@ -297,8 +317,6 @@ export class AddCardPage implements OnInit {
       loading.dismiss();
     }
   }
-  
-  
 
   private async loadCard(cardId: string) {
     const path = `users/${this.user.uid}/cards/${cardId}`;

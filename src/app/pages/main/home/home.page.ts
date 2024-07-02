@@ -20,7 +20,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   searchQuery: string = '';
   searchField: string = 'id_Cliente'; // Campo seleccionado para búsqueda (por defecto ID de Cliente)
-  items: any[] = []; // Asume que los elementos tienen una propiedad 'name'
+  items: any[] = [];
   filteredItems: any[] = [];
 
   cards: Card[] = [];
